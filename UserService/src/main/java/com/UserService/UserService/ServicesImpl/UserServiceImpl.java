@@ -208,7 +208,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (demandeurOptional.isEmpty()) {
-            return Boolean.TRUE;
+            return Boolean.FALSE;
         }
         Validator validator = validatorOptional.get();
         Demandeur demandeur = demandeurOptional.get();
