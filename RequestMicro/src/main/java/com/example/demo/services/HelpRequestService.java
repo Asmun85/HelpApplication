@@ -16,7 +16,9 @@ public interface HelpRequestService {
     List<Request> getAllRequests();
 
     List<Request> getRequestFromUser(Long userId);
+    public  void validateRequest(Long requestId) ;
 
+    public void refuseRequest(Long requestId, String motif);
 
 
 }

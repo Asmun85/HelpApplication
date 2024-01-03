@@ -1,8 +1,12 @@
 package com.example.demo.controller;
+import com.example.demo.entityDTO.RequestData;
+
 
 import com.example.demo.entity.Request;
 import com.example.demo.services.HelpRequestService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +39,7 @@ public class HelpRequestController {
     }
 
     // Mettre à jour une demande d'aide
-    @PutMapping("/{id}")
+    @PutMapping("update/{id}")
     public ResponseEntity<Request> updateRequest(@PathVariable Long id, @RequestBody Request helpRequest) {
         return helpRequestService.updateRequest(id, helpRequest)
                 .map(ResponseEntity::ok)
@@ -43,25 +47,46 @@ public class HelpRequestController {
     }
 
     // Supprimer une demande d'aide
-    @DeleteMapping("/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<Void> deleteRequest(@PathVariable Long id) {
         helpRequestService.deleteRequest(id);
         return ResponseEntity.ok().build();
     }
 
     // Lister toutes les demandes d'aide
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<Request>> getAllHelpRequests() {
         return ResponseEntity.ok(helpRequestService.getAllRequests());
     }
-    // Lister les demandes associées à un user
-    @GetMapping("/by-user/{userId}")
-    public ResponseEntity<List<Request>> getRequestsFromUser(@PathVariable Long userId) {
-        List<Request> requests = helpRequestService.getRequestFromUser(userId);
+    // Lister les demandes associées à un demandeur
+    @GetMapping("/bydemandeur/{demandeurId}")
+    public ResponseEntity<List<Request>> getRequestsFromUser(@PathVariable Long DemandeurId) {
+        List<Request> requests = helpRequestService.getRequestFromUser(DemandeurId);
         if (requests.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(requests);
+    }
+
+    @PutMapping("/validate-request/{id}")
+    public ResponseEntity<String> validateRequest(@PathVariable("id") Long requestId) {
+        try {
+            helpRequestService.validateRequest(requestId);
+            return ResponseEntity.ok("Request with ID " + requestId + " has been validated.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/refuse-request/{id}")
+    public ResponseEntity<String> refuseRequest(@PathVariable("id") Long requestId, @RequestBody RequestData requestData) {
+        try {
+            String motif = requestData.getMotif(); // Corrigé pour extraire le motif de requestData
+            helpRequestService.refuseRequest(requestId, motif);
+            return ResponseEntity.ok("Request with ID " + requestId + " has been refused with motif: " + motif);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
 

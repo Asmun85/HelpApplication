@@ -3,6 +3,7 @@ package com.example.demo.serviceImpl;
 import com.example.demo.entity.Request;
 import com.example.demo.repository.RequestRepository;
 import com.example.demo.services.HelpRequestService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,9 +46,24 @@ public class HelpRequestServiceImpl implements HelpRequestService {
         return requestRepository.findAll();
     }
 
-    public List<Request> getRequestFromUser(Long userId) {
-        return requestRepository.findByUserId(userId);
+    public List<Request> getRequestFromUser(Long demandeurId) {
+        return requestRepository.findByDemandeurId(demandeurId);
     }
 
+    public void validateRequest(Long requestId) {
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new EntityNotFoundException("Request not found with ID: " + requestId));
+
+        request.setStatus(Request.RequestStatus.VALIDEE);
+        requestRepository.save(request);
+    }
+
+    public void refuseRequest(Long requestId, String motif) {
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new EntityNotFoundException("Request not found with ID: " + requestId));
+        request.setStatus(Request.RequestStatus.REFUSEE);
+        request.setMotif(motif); // Mise à jour du motif avec la valeur spécifiée
+        requestRepository.save(request);
+    }
 
 }
