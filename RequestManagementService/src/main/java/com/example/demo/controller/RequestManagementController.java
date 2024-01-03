@@ -114,7 +114,10 @@ public class RequestManagementController {
         }
     }
 
-    /*  private static final Logger logger = LoggerFactory.getLogger(RequestManagementController.class);
+
+}
+
+/*  private static final Logger logger = LoggerFactory.getLogger(RequestManagementController.class);
 
     @Autowired
     private RequestManagementService requestManagementService;
@@ -153,9 +156,3 @@ public class RequestManagementController {
 
 
      */
-
-
-
-
-
-}

@@ -90,12 +90,12 @@ public class RequestManagementServiceImpl implements RequestManagementService {
 
 
     public boolean checkLinkExists(Long validatorId, Long demandeurId) throws IOException {
-        String linkCheckUrl = "http://localhost:9040/users/checklink/" + validatorId + "/" + demandeurId;
-        String response = fetchDataFromRemoteService(linkCheckUrl);
+            String linkCheckUrl = "http://localhost:9040/users/checklink/" + validatorId + "/" + demandeurId;
+            String response = fetchDataFromRemoteService(linkCheckUrl);
 
-        // Convertit la réponse en booléen
-        return Boolean.parseBoolean(response.trim());
-    }
+            // Convertit la réponse en booléen
+            return Boolean.parseBoolean(response.trim());
+        }
 }
 /*
  private static final Logger logger = LoggerFactory.getLogger(RequestManagementServiceImpl.class);

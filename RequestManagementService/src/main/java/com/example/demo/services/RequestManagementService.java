@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 /* Each service has an interface and impl
- * the SerivceImpl gives the implementation of the service*/
+* the SerivceImpl gives the implementation of the service*/
 @Service
 public interface RequestManagementService {
 
@@ -22,8 +22,8 @@ public interface RequestManagementService {
     public boolean checkIfUserIsValidator(Long userId) throws IOException;
 
     public boolean checkLinkExists(Long validatorId, Long demandeurId) throws IOException;
-}
-/*
+    }
+ /*
 
     public abstract List<Request> getAllValidatorRequests(long validatorId, Status status);
 
