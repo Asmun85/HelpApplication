@@ -1,24 +1,104 @@
-package com.RequestManagementService.RequestManagementService.ServicesImpl;
-
-import com.RequestManagementService.RequestManagementService.Entity.Request;
-import com.RequestManagementService.RequestManagementService.Entity.Status;
-import com.RequestManagementService.RequestManagementService.Repository.*;
-import com.RequestManagementService.RequestManagementService.Services.RequestManagementService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package com.example.demo.serviceImpl;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
+import com.example.demo.services.RequestManagementService;
+import org.springframework.stereotype.Service;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
+import org.springframework.web.client.RestClientException;
+
+import java.io.IOException;
 
 @Service
-public class RequestManagementServiceImpl implements RequestManagementService {
 
-    private static final Logger logger = LoggerFactory.getLogger(RequestManagementServiceImpl.class);
+public class RequestManagementServiceImpl implements RequestManagementService {
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public RequestManagementServiceImpl(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
+    @Override
+
+    public String fetchDataFromRemoteService(String remoteServiceUrl) throws IOException {
+        HttpClient httpClient = HttpClients.createDefault();
+        HttpGet httpGet = new HttpGet(remoteServiceUrl);
+
+        try {
+            HttpResponse response = httpClient.execute(httpGet);
+            return EntityUtils.toString(response.getEntity());
+        } catch (IOException e) {
+            e.printStackTrace(); // Loggez l'exception
+            return "false"; // Renvoie une valeur par défaut ou gérez autrement
+        }
+    }
+
+    @Override
+    public String fetchDataFromUserServiceById(long userId, String userServiceUrl) throws IOException {
+        try {
+            String url = userServiceUrl + "/" + userId;
+            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+            if (response.getStatusCode() == HttpStatus.OK) {
+                return response.getBody();
+            } else {
+                throw new IOException("Erreur lors de la récupération des données utilisateur.");
+            }
+        } catch (RestClientException e) {
+            throw new IOException("Erreur lors de la récupération des données utilisateur.", e);
+        }
+    }
+
+    @Override
+    public boolean checkIfUserIsDemandeur(Long userId) throws IOException {
+        String userServiceUrl = "http://localhost:9040/users/demandeur/" + userId;
+        String response = fetchDataFromRemoteService(userServiceUrl);
+
+        // La réponse est directement interprétée comme un booléen
+        return Boolean.parseBoolean(response.trim());
+    }
+
+    public boolean checkIfUserIsValidator(Long userId) throws IOException {
+        String userServiceUrl = "http://localhost:9040/users/validator/" + userId;
+        String response = fetchDataFromRemoteService(userServiceUrl);
+
+        // Interpréter la réponse comme un booléen
+        return Boolean.parseBoolean(response.trim());
+    }
+
+
+    public String validateRequest(Long requestId) throws IOException {
+        String validateRequestUrl = "http://localhost:9080/validate-request/" + requestId;
+        ResponseEntity<String> response = restTemplate.getForEntity(validateRequestUrl, String.class);
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return "La demande a été validée avec succès.";
+        } else {
+            return "Échec de la validation de la demande.";
+        }
+
+    }
+
+
+    public boolean checkLinkExists(Long validatorId, Long demandeurId) throws IOException {
+        String linkCheckUrl = "http://localhost:9040/users/checklink/" + validatorId + "/" + demandeurId;
+        String response = fetchDataFromRemoteService(linkCheckUrl);
+
+        // Convertit la réponse en booléen
+        return Boolean.parseBoolean(response.trim());
+    }
+}
+/*
+ private static final Logger logger = LoggerFactory.getLogger(RequestManagementServiceImpl.class);
 
     @Autowired
     private RequestRepository requestRepository;
@@ -50,6 +130,8 @@ public class RequestManagementServiceImpl implements RequestManagementService {
     public List<Request> getAllRequest() {
         return requestRepository.findAll();
     }
+ */
 
 
-}
+
+
