@@ -77,9 +77,15 @@ public class UserController {
         return userService.linkValidatorToDemandeur(validatorId, demandeurId);
     }
 
-    @GetMapping("/link")
+    @GetMapping("/checklink")
     public ResponseEntity<Object> getLink(@RequestParam Long validatorId , @RequestParam Long demandeurId ){
         return new ResponseEntity<>(userService.getLink(validatorId,demandeurId),HttpStatus.OK);
+    }
+
+    @PostMapping("/finallink")
+    public ResponseEntity<Boolean> linkValidatorToDemandeur(@RequestParam Long validatorId, @RequestParam Long demandeurId) {
+        boolean linkCreated = userService.tryLinkValidatorToDemandeur(validatorId, demandeurId);
+        return ResponseEntity.ok(linkCreated);
     }
 
     @GetMapping("/validator/{userId}")

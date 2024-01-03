@@ -215,8 +215,35 @@ public class UserServiceImpl implements UserService {
 
         return validatorDemandeurLinkRepository.existsByValidatorAndDemandeur(validator,demandeur);
     }
+// Cette fonction renvoie true s'il existe un lien entre le Validator et le demandeur, renvoie aussi true
+// la fonction renvoie aussi true si le lien est crée
+    // la fonction retourne false si les on a pas un demandeur et un validator
 
-    @Override
+
+    public boolean tryLinkValidatorToDemandeur(Long validatorId, Long demandeurId) {
+        Optional<Validator> validatorOptional = validatorRepository.findById(validatorId);
+        Optional<Demandeur> demandeurOptional = demandeurRepository.findById(demandeurId);
+
+        if (validatorOptional.isEmpty() || demandeurOptional.isEmpty()) {
+            return false;
+        }
+
+        Validator validator = validatorOptional.get();
+        Demandeur demandeur = demandeurOptional.get();
+
+        if (validatorDemandeurLinkRepository.existsByValidatorAndDemandeur(validator, demandeur)) {
+            return true; // Le lien existe déjà
+        }
+
+        ValidatorDemandeurLink link = new ValidatorDemandeurLink();
+        link.setId(new ValidatorDemandeurLinkId(validatorId, demandeurId));
+        link.setValidator(validator);
+        link.setDemandeur(demandeur);
+
+        validatorDemandeurLinkRepository.save(link);
+        return true; // Le lien a été créé avec succès
+    }
+
     public Boolean isUserAValidator(Long userId) {
         return validatorRepository.existsById(userId);
     }
