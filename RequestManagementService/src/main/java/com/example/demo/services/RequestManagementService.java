@@ -14,9 +14,11 @@ public interface RequestManagementService {
 
 
     public String fetchDataFromRemoteService(String url, String method) throws IOException;
+
     String fetchDataFromUserServiceById(long userId, String userServiceUrl) throws IOException;
 
-    public String validateRequest(Long requestId) throws IOException ;
+    public String validateRequest(Long requestId) throws IOException;
+
     public boolean checkIfUserIsDemandeur(Long userId) throws IOException;
 
     public boolean checkIfUserIsValidator(Long userId) throws IOException;
@@ -24,6 +26,8 @@ public interface RequestManagementService {
     public boolean checkLinkExists(Long validatorId, Long demandeurId) throws IOException;
 
     public String sendRefuseRequest(Long requestId, String motif) throws IOException;
+
+}
 
  /*
 

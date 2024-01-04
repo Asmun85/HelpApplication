@@ -73,7 +73,8 @@ public class RequestManagementController {
         return ResponseEntity.ok(linkExists);
     }
 
-    // Ici on recupere le user_id de la demande specifié et check le lien   si c'est le cas on modifie le status
+    // Ici on recupere le demandeur_id et le validateur_id de la demande specifié
+    // check le lien   si ok on valide la request, son status devient VALIDEE
     @GetMapping("/valid/{requestId}")
     public ResponseEntity<String> fetchRequestById(@PathVariable Long requestId) {
         try {
@@ -97,7 +98,8 @@ public class RequestManagementController {
             return new ResponseEntity<>("Erreur lors de la récupération de la demande.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    // Ici on recupere le demandeur_id et le validateur_id de la demande specifié
+    // si la condition du validateur et du demandeur 'est pas donée, on refuse la request
     @GetMapping("/refuse/{requestId}")
     public ResponseEntity<String> refuseRequestById(@PathVariable Long requestId) {
         try {
@@ -112,11 +114,11 @@ public class RequestManagementController {
 
             boolean linkExists = requestManagementService.checkLinkExists(validatorId, demandeurId);
             if (!linkExists) {
-                // Ici, vous pouvez définir ou obtenir le motif de refus
-                String motifRefus = "Motif du refus non spécifié"; // À personnaliser selon votre logique
+
+                String motifRefus = "Voila le motif de votre refus";
 
                 // Appeler sendRefuseRequest
-                String response = RequestManagementService.sendRefuseRequest(requestId, motifRefus);
+                String response = requestManagementService.sendRefuseRequest(requestId, motifRefus);
                 return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>("La demande ne peut pas être refusée car le lien existe", HttpStatus.BAD_REQUEST);
