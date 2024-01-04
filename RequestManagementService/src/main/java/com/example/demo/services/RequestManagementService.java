@@ -22,7 +22,9 @@ public interface RequestManagementService {
     public boolean checkIfUserIsValidator(Long userId) throws IOException;
 
     public boolean checkLinkExists(Long validatorId, Long demandeurId) throws IOException;
-    }
+
+    public String sendRefuseRequest(Long requestId, String motif) throws IOException;
+
  /*
 
     public abstract List<Request> getAllValidatorRequests(long validatorId, Status status);

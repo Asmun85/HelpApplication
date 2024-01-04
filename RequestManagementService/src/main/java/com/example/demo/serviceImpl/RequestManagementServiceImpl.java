@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 
@@ -116,6 +118,32 @@ public class RequestManagementServiceImpl implements RequestManagementService {
             return "Échec de la validation de la demande.";
         }
     }
+
+    public String sendRefuseRequest(Long requestId, String motif) throws IOException {
+        String refuseRequestUrl = "http://localhost:9080/request/refuse-request/" + requestId;
+
+        // Création d'une Map pour contenir le motif
+        Map<String, String> requestBody = new HashMap<>();
+        requestBody.put("motif", motif);
+
+        // Création d'une entité de requête pour la requête PUT avec le motif comme corps
+        HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(requestBody);
+
+        // Envoi d'une requête PUT
+        ResponseEntity<String> response = restTemplate.exchange(
+                refuseRequestUrl,
+                HttpMethod.PUT,
+                requestEntity,
+                String.class);
+
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return "La demande avec ID " + requestId + " a été refusée avec le motif: " + motif;
+        } else {
+            return "Échec du refus de la demande.";
+        }
+    }
+
+
 
 
     public boolean checkLinkExists(Long validatorId, Long demandeurId) throws IOException {

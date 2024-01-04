@@ -42,7 +42,7 @@ public class RequestManagementController {
             String requestServiceUrl = "http://localhost:9080/request/all";
 
             // Appelez le service pour récupérer les données du microservice "request"
-            String data = requestManagementService.fetchDataFromRemoteService(requestServiceUrl,"GET");
+            String data = requestManagementService.fetchDataFromRemoteService(requestServiceUrl, "GET");
             return ResponseEntity.ok(data);
         } catch (IOException e) {
             // Gérer les erreurs de manière appropriée
@@ -78,7 +78,7 @@ public class RequestManagementController {
     public ResponseEntity<String> fetchRequestById(@PathVariable Long requestId) {
         try {
             String requestServiceUrl = "http://localhost:9080/request/" + requestId;
-            String requestData = requestManagementService.fetchDataFromRemoteService(requestServiceUrl,"GET");
+            String requestData = requestManagementService.fetchDataFromRemoteService(requestServiceUrl, "GET");
 
             JsonNode rootNode = objectMapper.readTree(requestData);
             Long demandeurId = rootNode.path("demandeurId").asLong(); // Extraction de l'ID du demandeur
@@ -98,8 +98,35 @@ public class RequestManagementController {
         }
     }
 
-}
+    @GetMapping("/refuse/{requestId}")
+    public ResponseEntity<String> refuseRequestById(@PathVariable Long requestId) {
+        try {
+            String requestServiceUrl = "http://localhost:9080/request/" + requestId;
+            String requestData = requestManagementService.fetchDataFromRemoteService(requestServiceUrl, "GET");
 
+            JsonNode rootNode = objectMapper.readTree(requestData);
+            Long demandeurId = rootNode.path("demandeurId").asLong();
+            Long validatorId = rootNode.path("validatorId").asLong();
+            logger.info("Demandeur ID: " + demandeurId);
+            logger.info("Validator ID: " + validatorId);
+
+            boolean linkExists = requestManagementService.checkLinkExists(validatorId, demandeurId);
+            if (!linkExists) {
+                // Ici, vous pouvez définir ou obtenir le motif de refus
+                String motifRefus = "Motif du refus non spécifié"; // À personnaliser selon votre logique
+
+                // Appeler sendRefuseRequest
+                String response = RequestManagementService.sendRefuseRequest(requestId, motifRefus);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("La demande ne peut pas être refusée car le lien existe", HttpStatus.BAD_REQUEST);
+            }
+        } catch (IOException e) {
+            return new ResponseEntity<>("Erreur lors de la récupération de la demande.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+}
 /*
 
     @GetMapping("/UsersFromUserService")
