@@ -37,4 +37,6 @@ public interface UserService {
     public Boolean isUserADemandeur(Long userId);
 
     public Boolean isUserABenevole(Long userId);
+
+    public boolean tryLinkValidatorToDemandeur(Long validatorId, Long demandeurId);
 }
