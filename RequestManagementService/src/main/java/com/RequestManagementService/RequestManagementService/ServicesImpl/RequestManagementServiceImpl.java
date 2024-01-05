@@ -1,44 +1,22 @@
 package com.RequestManagementService.RequestManagementService.ServicesImpl;
 
-import com.RequestManagementService.RequestManagementService.Entity.Request;
-import com.RequestManagementService.RequestManagementService.Entity.Status;
 import com.RequestManagementService.RequestManagementService.Repository.*;
 import com.RequestManagementService.RequestManagementService.Services.RequestManagementService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 public class RequestManagementServiceImpl implements RequestManagementService {
 
     private static final Logger logger = LoggerFactory.getLogger(RequestManagementServiceImpl.class);
 
-    @Autowired
-    private RequestRepository requestRepository;
-
-    @Override
-    public List<Request> getAllValidatorRequests(long validatorId, Status status) {
-        // Retrieve all requests for a validator with a given status
-        return requestRepository.findAllByValidatorIdAndStatus(validatorId, status);
-    }
-    @Override
-    public List<Request> getAllDemandeurRequests(long demandeurId, Status status) {
-        // Retrieve all requests for a demandeur with a given status
-        return requestRepository.findAllByDemandeurIdAndStatus(demandeurId, status);
-    }
-    @Override
-    public Request getRequestById(long id) {
-        // Retrieve a request by its id
-        return requestRepository.findRequestByRequestId(id).orElse(null);
-    }
-
-    public List<Request> getRequestRealisee() {
-        // Retrieve all requests with status 'REALISEE'
-        return requestRepository.findAllByStatus(Status.REALISEE);
-    }
 
 
 }
