@@ -18,7 +18,7 @@ public class Request {
     @Column(name = "contenu")
     private String contenu;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private Status status;
 
     @OneToOne

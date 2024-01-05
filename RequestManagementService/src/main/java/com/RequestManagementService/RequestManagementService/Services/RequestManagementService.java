@@ -18,6 +18,4 @@ public interface RequestManagementService {
     public abstract Request getRequestById(long id);
 
     public abstract List<Request> getRequestRealisee();
-
-    public abstract List<Request> getAllRequest();
 }

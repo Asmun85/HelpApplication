@@ -22,7 +22,6 @@ public class RequestManagementServiceImpl implements RequestManagementService {
     @Override
     public List<Request> getAllValidatorRequests(long validatorId, Status status) {
         // Retrieve all requests for a validator with a given status
-        logger.info(String.valueOf(requestRepository.findAllByValidatorIdAndStatus(validatorId, status).isEmpty()));
         return requestRepository.findAllByValidatorIdAndStatus(validatorId, status);
     }
     @Override
@@ -36,15 +35,9 @@ public class RequestManagementServiceImpl implements RequestManagementService {
         return requestRepository.findRequestByRequestId(id).orElse(null);
     }
 
-    @Override
     public List<Request> getRequestRealisee() {
         // Retrieve all requests with status 'REALISEE'
         return requestRepository.findAllByStatus(Status.REALISEE);
-    }
-
-    @Override
-    public List<Request> getAllRequest() {
-        return requestRepository.findAll();
     }
 
 
