@@ -8,7 +8,6 @@ public class RequestManagementServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RequestManagementServiceApplication.class, args);
-		System.out.println("Request Management Service is launched");
 	}
 
 }
