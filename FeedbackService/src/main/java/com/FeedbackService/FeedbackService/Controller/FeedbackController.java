@@ -30,6 +30,7 @@ public class FeedbackController {
 
     @PostMapping("/newfeedback")
     public ResponseEntity<Feedback> postFeedback(@RequestBody FeedbackDTO feedbackDTO) {
+        logger.info(feedbackDTO.toString());
         Feedback createdFeedback = feedbackService.postFeedback(
                 feedbackDTO.getUserId(),
                 feedbackDTO.getRequestId(),

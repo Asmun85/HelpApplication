@@ -39,11 +39,12 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Transactional
     public Feedback postFeedback(Long userId, Long requestId, String content, String text) {
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        Request request = requestRepository.findById(requestId).orElseThrow(() -> new IllegalArgumentException("Request not found"));
+        Request request = requestRepository.findRequestByRequestId(requestId).orElseThrow(() -> new IllegalArgumentException("Request not found"));
 
         Feedback feedback = new Feedback();
         feedback.setUser(user);
         feedback.setRequest(request);
+        logger.info(request.toString());
         feedback.setContent(content);
         feedback.setText(text);
 

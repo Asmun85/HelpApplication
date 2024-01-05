@@ -33,7 +33,7 @@ public class RequestManagementServiceImpl implements RequestManagementService {
     @Override
     public Request getRequestById(long id) {
         // Retrieve a request by its id
-        return requestRepository.findById(id).orElse(null);
+        return requestRepository.findRequestByRequestId(id).orElse(null);
     }
 
     @Override
