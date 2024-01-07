@@ -82,7 +82,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getLink(validatorId,demandeurId),HttpStatus.OK);
     }
 
-    @PostMapping("/finallink")
+    @PostMapping("/findallink")
     public ResponseEntity<Boolean> linkValidatorToDemandeur(@RequestParam Long validatorId, @RequestParam Long demandeurId) {
         boolean linkCreated = userService.tryLinkValidatorToDemandeur(validatorId, demandeurId);
         return ResponseEntity.ok(linkCreated);

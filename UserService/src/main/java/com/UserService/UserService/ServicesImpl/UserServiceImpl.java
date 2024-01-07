@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void createNewUser(User user) {
 
         if (userRepository.findUserByLogin(user.getLogin()).isPresent()){
@@ -69,17 +70,17 @@ public class UserServiceImpl implements UserService {
             userRepository.save(new_user);
             if (user.getIsDemandeur()) {
                 Demandeur demandeur = new Demandeur();
-                demandeur.setId(user.getId());
+                demandeur.setDemandeur(user);
                 demandeurRepository.save(demandeur);
             }
             if (user.getIsValidator()) {
                 Validator validator= new Validator();
-                validator.setId(user.getId());
+                validator.setValidator(user);
                 validatorRepository.save(validator);
             }
             if (user.getIsBenevole()) {
                 Benevole benevole = new Benevole();
-                benevole.setId(user.getId());
+                benevole.setBenevole(user);
                 benevoleRepository.save(benevole);
             }
         }
@@ -105,6 +106,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
+    @Transactional
     public Optional<User> updateUser(Long id, RoleDTO roleDTO) {
         logger.info("in userService : updateUser");
         Optional<User> updatedUser = getUserById(id);
