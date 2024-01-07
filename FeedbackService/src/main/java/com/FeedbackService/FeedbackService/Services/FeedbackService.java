@@ -3,6 +3,7 @@ package com.FeedbackService.FeedbackService.Services;
 
 
 import com.FeedbackService.FeedbackService.Entity.Feedback;
+import com.FeedbackService.FeedbackService.Entity.Request;
 import jakarta.transaction.Transactional;
 
 import java.util.List;

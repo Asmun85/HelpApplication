@@ -22,6 +22,7 @@ public class FeedbackController {
     @Autowired
     private FeedbackService feedbackService;
 
+
     @GetMapping("/{requestId}")
     public ResponseEntity<List<Feedback>> getFeedbackByRequestID(@PathVariable Long requestId) {
         List<Feedback> feedbackList = feedbackService.getFeedbackByRequestID(requestId);
@@ -46,8 +47,9 @@ public class FeedbackController {
     }
 
     @PutMapping("update/feedback/{feedbackId}")
-    public ResponseEntity<Feedback> updateFeedback(@PathVariable Long feedbackId, @RequestBody String content, @RequestBody String text) {
-        Feedback updatedFeedback = feedbackService.updateFeedback(feedbackId, content, text);
+    public ResponseEntity<Feedback> updateFeedback(@PathVariable Long feedbackId, @RequestBody FeedbackDTO feedbackDTO) {
+        logger.info("in updateFeedback Controller ");
+        Feedback updatedFeedback = feedbackService.updateFeedback(feedbackId, feedbackDTO.getContent(), feedbackDTO.getText());
         return ResponseEntity.ok().body(updatedFeedback);
     }
 

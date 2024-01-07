@@ -12,7 +12,9 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -21,14 +23,18 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     private static final Logger logger = LoggerFactory.getLogger(FeedbackServiceImpl.class);
 
+    private final RestTemplate restTemplate;
+
+    @Autowired
+    public FeedbackServiceImpl(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
     @Autowired
     private FeedbackRepository feedbackRepository;
 
     @Autowired
-    private UserRepository userRepository; // Assuming this exists
-
-    @Autowired
-    private RequestRepository requestRepository; // Assuming this exists
+    private RequestRepository requestRepository;
 
     @Override
     public List<Feedback> getFeedbackByRequestID(Long requestId) {
@@ -38,17 +44,39 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     @Transactional
     public Feedback postFeedback(Long userId, Long requestId, String content, String text) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        Request request = requestRepository.findRequestByRequestId(requestId).orElseThrow(() -> new IllegalArgumentException("Request not found"));
-
+        Request request = fetchRequestById(requestId);
+        logger.info("request found");
+        User user = fetchUserById(userId);
+        logger.info("user found");
+        logger.info(user.toString());
         Feedback feedback = new Feedback();
-        feedback.setUser(user);
-        feedback.setRequest(request);
-        logger.info(request.toString());
-        feedback.setContent(content);
+        feedback.setUserId(userId);
+        feedback.setRequestId(request.getId());
         feedback.setText(text);
-
+        feedback.setContent(content);
         return feedbackRepository.save(feedback);
+    }
+
+    private Request fetchRequestById(Long requestId) {
+        String url = "http://localhost:9080/request/" + requestId;
+        ResponseEntity<Request> response = restTemplate.getForEntity(url, Request.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        } else {
+            throw new IllegalArgumentException("Request not found");
+        }
+    }
+
+    private User fetchUserById(Long userId) {
+        String url = "http://localhost:9040/users/" + userId;
+        ResponseEntity<User> response = restTemplate.getForEntity(url, User.class);
+
+        if (response.getStatusCode().is2xxSuccessful()) {
+            return response.getBody();
+        } else {
+            throw new IllegalArgumentException("User not found");
+        }
     }
 
     @Override

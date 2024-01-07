@@ -21,15 +21,14 @@ public class Request {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "demandeur_id")
-    private Demandeur demandeur;
+    @Column(name = "demandeur_id")
+    private Long demandeurId;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "validator_id")
-    private Validator validator;
+    @Column(name = "benevole_id")
+    private Long benevoleId;
+
+    @Column(name = "validator_id")
+    private Long validatorId;
 
 
 }

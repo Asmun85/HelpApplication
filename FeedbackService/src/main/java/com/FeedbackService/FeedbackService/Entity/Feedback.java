@@ -8,18 +8,15 @@ import lombok.Data;
 @Table(name = "feedback")
 public class Feedback {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // or another suitable strategy
     @Column(name = "feedback_id")
     private Long id;
 
-    @ManyToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "request_id")
+    private Long requestId;
 
-    @ManyToOne
-    @MapsId
-    @JoinColumn(name = "request_id")
-    private Request request;
+    @Column(name = "user_id")
+    private Long userId;
 
     @Column(name = "content")
     private String content;
