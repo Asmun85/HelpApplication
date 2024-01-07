@@ -12,9 +12,9 @@ public class Demandeur {
     @Column(name = "user_id")
     private Long id;
 
-    @ManyToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
-    private User demandeur;
+//    @ManyToOne
+//    @MapsId
+//    @JoinColumn(name = "user_id")
+//    private User demandeur;
 
 }

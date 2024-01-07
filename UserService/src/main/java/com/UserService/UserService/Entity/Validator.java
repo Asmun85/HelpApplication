@@ -12,10 +12,10 @@ public class Validator {
     @Column(name = "user_id")
     private Long id;
 
-    @ManyToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
-    private User validator;
+//    @ManyToOne
+//    @MapsId
+//    @JoinColumn(name = "user_id")
+//    private User validator;
 
 
 }

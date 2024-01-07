@@ -69,17 +69,17 @@ public class UserServiceImpl implements UserService {
             userRepository.save(new_user);
             if (user.getIsDemandeur()) {
                 Demandeur demandeur = new Demandeur();
-                demandeur.setDemandeur(new_user);
+                demandeur.setId(user.getId());
                 demandeurRepository.save(demandeur);
             }
             if (user.getIsValidator()) {
                 Validator validator= new Validator();
-                validator.setValidator(new_user);
+                validator.setId(user.getId());
                 validatorRepository.save(validator);
             }
             if (user.getIsBenevole()) {
                 Benevole benevole = new Benevole();
-                benevole.setBenevole(new_user);
+                benevole.setId(user.getId());
                 benevoleRepository.save(benevole);
             }
         }
@@ -128,7 +128,7 @@ public class UserServiceImpl implements UserService {
         else{
             if(updatedUser.get().getIsDemandeur()){
                 Demandeur new_demandeur = new Demandeur();
-                new_demandeur.setDemandeur(updatedUser.get());
+                new_demandeur.setId(updatedUser.get().getId());
                 demandeurRepository.save(new_demandeur);
             }
         }
@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
         else{
             if(updatedUser.get().getIsBenevole()){
                 Benevole new_benevole = new Benevole();
-                new_benevole.setBenevole(updatedUser.get());
+                new_benevole.setId(updatedUser.get().getId());
                 benevoleRepository.save(new_benevole);
             }
         }

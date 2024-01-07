@@ -12,8 +12,4 @@ public class Benevole {
     @Column(name = "user_id")
     private Long id;
 
-    @ManyToOne
-    @MapsId
-    @JoinColumn(name = "user_id")
-    private User benevole;
 }
