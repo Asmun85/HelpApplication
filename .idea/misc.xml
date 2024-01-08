@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/HelpRequestService/pom.xml" />
         <option value="$PROJECT_DIR$/AuthentificationService/pom.xml" />
         <option value="$PROJECT_DIR$/RequestManagementService/pom.xml" />
+        <option value="$PROJECT_DIR$/DiscoveryService/pom.xml" />
       </list>
     </option>
     <option name="workspaceImportForciblyTurnedOn" value="true" />

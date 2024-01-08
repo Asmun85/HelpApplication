@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AuthentificationService/AuthentificationService.iml" filepath="$PROJECT_DIR$/AuthentificationService/AuthentificationService.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/BackEnd.iml" filepath="$PROJECT_DIR$/.idea/BackEnd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RequestManagementService/RequestManagementService.iml" filepath="$PROJECT_DIR$/RequestManagementService/RequestManagementService.iml" />
       <module fileurl="file://$PROJECT_DIR$/UserService/UserService.iml" filepath="$PROJECT_DIR$/UserService/UserService.iml" />
     </modules>
   </component>

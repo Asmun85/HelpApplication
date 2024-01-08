@@ -10,6 +10,7 @@
         <module name="AuthentificationService" />
         <module name="HelpRequestService" />
         <module name="RequestManagementService" />
+        <module name="DiscoveryService" />
         <module name="UserService" />
         <module name="FeedbackService" />
       </profile>
@@ -18,6 +19,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="AuthentificationService" options="-parameters" />
+      <module name="DiscoveryService" options="-parameters" />
       <module name="FeedbackService" options="-parameters" />
       <module name="HelpRequestService" options="-parameters" />
       <module name="RequestManagementService" options="-parameters" />
