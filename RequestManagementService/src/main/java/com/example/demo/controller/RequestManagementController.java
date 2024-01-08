@@ -23,16 +23,17 @@ import java.util.Map;
 public class RequestManagementController {
     @Autowired
     private RequestManagementService requestManagementService;
+
     @Autowired
     private ObjectMapper objectMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(RequestManagementController.class);
 
 
-    @Autowired
-    public RequestManagementController(RequestManagementService requestManagementService) {
-        this.requestManagementService = requestManagementService;
-    }
+//    @Autowired
+//    public RequestManagementController(RequestManagementService requestManagementService) {
+//        this.requestManagementService = requestManagementService;
+//    }
 
     // endpoint pour récupérer toutes les requests depuis le microservice "request"
     @GetMapping("/requests")
